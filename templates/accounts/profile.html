@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Hồ Sơ Của Tôi | FashionStore{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-4">
+        <!-- Sidebar Navigation -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm p-4 rounded-0 bg-light">
+                <div class="text-center mb-4">
+                    {% if user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="rounded-circle img-thumbnail mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                    {% else %}
+                    <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                        {{ user.username|make_list|first|upper }}
+                    </div>
+                    {% endif %}
+                    <h5 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h5>
+                    <small class="text-muted">{{ user.email }}</small>
+                </div>
+
+                <div class="list-group list-group-flush rounded-0">
+                    <a href="{% url 'accounts:profile' %}" class="list-group-item list-group-item-action active bg-dark border-dark text-white fw-semibold">
+                        <i class="bi bi-person me-2"></i> Thông tin tài khoản
+                    </a>
+                    <a href="{% url 'orders:history' %}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-box-seam me-2"></i> Lịch sử đơn hàng ({{ orders_count }})
+                    </a>
+                    {% if user.is_staff %}
+                    <a href="{% url 'core:admin_dashboard' %}" class="list-group-item list-group-item-action text-danger fw-bold">
+                        <i class="bi bi-speedometer2 me-2"></i> Admin Dashboard
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Profile Form -->
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-sm p-4 p-md-5 rounded-0 bg-white">
+                <h3 class="fw-bold mb-4 serif-font">Cập Nhật Hồ Sơ Cá Nhân</h3>
+                
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">{{ u_form.first_name.label }}</label>
+                            {{ u_form.first_name }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">{{ u_form.last_name.label }}</label>
+                            {{ u_form.last_name }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">{{ u_form.email.label }}</label>
+                            {{ u_form.email }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">{{ p_form.phone_number.label }}</label>
+                            {{ p_form.phone_number }}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold">{{ p_form.address.label }}</label>
+                            {{ p_form.address }}
+                            <small class="text-muted">Địa chỉ này sẽ được dùng làm địa chỉ giao hàng mặc định khi bạn thanh toán đơn hàng.</small>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold">{{ p_form.avatar.label }}</label>
+                            {{ p_form.avatar }}
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-fashion-dark px-4 py-2">
+                                Lưu Thay Đổi
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% load static %}
+<footer class="fashion-footer">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Brand Story -->
+            <div class="col-lg-4 col-md-6">
+                <h5 class="brand-logo mb-3">FASHION<span class="text-secondary fw-light">STORE</span></h5>
+                <p class="text-muted small pe-lg-4">
+                    Thương hiệu thời trang định hình phong cách hiện đại, tối giản và bền vững. Chúng tôi tin rằng thời trang thực thụ bắt đầu từ sự vừa vặn, chất liệu cao cấp và sự tự tin từ bên trong.
+                </p>
+                <div class="d-flex gap-3 text-secondary fs-5 mt-3">
+                    <a href="#" class="text-dark"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-dark"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-dark"><i class="bi bi-tiktok"></i></a>
+                    <a href="#" class="text-dark"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- Shop categories -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="footer-heading">Mua sắm</h6>
+                <ul class="footer-link-list">
+                    <li><a href="{% url 'products:product_list' %}">Tất cả sản phẩm</a></li>
+                    {% for cat in nav_categories|slice:":4" %}
+                    <li><a href="{% url 'products:category_products' cat.slug %}">{{ cat.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Customer Service -->
+            <div class="col-lg-3 col-md-6 col-6">
+                <h6 class="footer-heading">Dịch vụ khách hàng</h6>
+                <ul class="footer-link-list">
+                    <li><a href="{% url 'core:about' %}">Về FashionStore</a></li>
+                    <li><a href="{% url 'core:contact' %}">Liên hệ & Hỗ trợ</a></li>
+                    <li><a href="#">Hướng dẫn chọn Size</a></li>
+                    <li><a href="#">Chính sách đổi trả 30 ngày</a></li>
+                    <li><a href="#">Thanh toán khi nhận hàng (COD)</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact & Newsletter -->
+            <div class="col-lg-3 col-md-6">
+                <h6 class="footer-heading">Thông tin liên hệ</h6>
+                <p class="text-muted small mb-2"><i class="bi bi-geo-alt me-2"></i> Tòa nhà Fashion, Cầu Giấy, Hà Nội</p>
+                <p class="text-muted small mb-2"><i class="bi bi-telephone me-2"></i> Hotline: 1900 6868 (8h00 - 22h00)</p>
+                <p class="text-muted small mb-3"><i class="bi bi-envelope me-2"></i> cskh@fashionstore.com</p>
+                <div class="p-2 border bg-white small text-center text-muted">
+                    <i class="bi bi-shield-check text-success me-1"></i> 100% Hàng chính hãng & Đổi trả linh hoạt
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4 text-muted">
+
+        <div class="row align-items-center small text-muted">
+            <div class="col-md-6 text-center text-md-start">
+                &copy; 2026 FashionStore E-Commerce. Thiết kế chuẩn kiến trúc MTV trên Django.
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                <span class="me-3">Bảo mật thông tin</span>
+                <span class="me-3">Điều khoản dịch vụ</span>
+                <a href="/api/products/" target="_blank" class="text-decoration-underline text-secondary">REST API</a>
+            </div>
+        </div>
+    </div>
+</footer>

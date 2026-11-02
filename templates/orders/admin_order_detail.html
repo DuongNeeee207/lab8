@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Xử Lý Đơn Hàng #{{ order.order_number }} | FashionStore Admin{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <span class="text-uppercase small text-muted">Hệ thống quản trị</span>
+            <h2 class="fw-bold serif-font mb-0">Xử Lý Đơn Hàng: #{{ order.order_number }}</h2>
+            <small class="text-muted">Đặt lúc {{ order.created_at|date:"d/m/Y H:i" }}</small>
+        </div>
+        <a href="{% url 'orders:admin_order_list' %}" class="btn btn-fashion-outline btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Quay lại danh sách đơn hàng
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Order Items Breakdown -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-0 mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="fw-bold mb-0">Sản Phẩm Trong Đơn Hàng ({{ order.items.count }})</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light small text-uppercase">
+                            <tr>
+                                <th class="ps-4">Tên sản phẩm</th>
+                                <th>Phân loại</th>
+                                <th>Đơn giá</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-end pe-4">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items.all %}
+                            <tr>
+                                <td class="ps-4 py-3">
+                                    <strong>{{ item.product_name }}</strong>
+                                </td>
+                                <td><span class="badge bg-light text-dark border">{{ item.variant_info }}</span></td>
+                                <td>{{ item.unit_price|vnd }}</td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td class="text-end pe-4 fw-bold">{{ item.subtotal|vnd }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <td colspan="4" class="text-end fw-bold">Tổng giá trị đơn:</td>
+                                <td class="text-end pe-4 text-danger fw-bold fs-5">{{ order.total_amount|vnd }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Customer Details Card -->
+            <div class="card border-0 shadow-sm p-4 rounded-0 bg-white">
+                <h5 class="fw-bold mb-3">Thông Tin Người Nhận & Địa Chỉ Giao Hàng</h5>
+                <div class="row g-3 small">
+                    <div class="col-md-6">
+                        <span class="text-muted d-block">Họ tên người nhận:</span>
+                        <strong>{{ order.full_name }}</strong>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-muted d-block">Số điện thoại liên hệ:</span>
+                        <strong>{{ order.phone_number }}</strong>
+                    </div>
+                    <div class="col-12">
+                        <span class="text-muted d-block">Địa chỉ giao nhận chi tiết:</span>
+                        <div class="p-2 bg-light border mt-1">{{ order.shipping_address }}</div>
+                    </div>
+                    {% if order.note %}
+                    <div class="col-12">
+                        <span class="text-muted d-block">Ghi chú của khách hàng:</span>
+                        <div class="p-2 bg-light border mt-1 fst-italic">{{ order.note }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Status Sidebar Form -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm p-4 rounded-0 bg-light sticky-top" style="top: 90px;">
+                <h5 class="fw-bold mb-3 text-uppercase small letter-spacing-1">Cập Nhật Trạng Thái Đơn Hàng</h5>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">{{ form.order_status.label }}</label>
+                        {{ form.order_status }}
+                        <small class="text-muted d-block mt-1">Lưu ý: Nếu chuyển sang "Đã hủy", hệ thống sẽ tự động hoàn trả số lượng các mặt hàng này vào kho.</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">{{ form.payment_status.label }}</label>
+                        {{ form.payment_status }}
+                    </div>
+
+                    <button type="submit" class="btn btn-fashion-dark w-100 py-3 text-uppercase">
+                        <i class="bi bi-save me-1"></i> Lưu Cập Nhật
+                    </button>
+                </form>
+
+                <hr class="my-4">
+
+                <div class="small text-muted">
+                    <p class="mb-1"><strong>Phương thức:</strong> {{ order.get_payment_method_display }}</p>
+                    <p class="mb-0"><strong>Cập nhật lần cuối:</strong> {{ order.updated_at|date:"d/m/Y H:i" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | FashionStore{% endblock %}
+
+{% block content %}
+<div class="container py-3 py-md-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3 mb-md-4">
+        <ol class="breadcrumb small text-uppercase mb-0">
+            <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-decoration-none text-muted">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'products:product_list' %}" class="text-decoration-none text-muted">Sản phẩm</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'products:category_products' product.category.slug %}" class="text-decoration-none text-muted">{{ product.category.name }}</a></li>
+            <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4 g-lg-5 align-items-start">
+        <!-- Product Image Showcase -->
+        <div class="col-12 col-md-6 col-lg-6">
+            <div class="product-detail-gallery position-relative rounded-3 overflow-hidden border bg-white shadow-sm">
+                <div class="product-image-wrapper ratio ratio-3x4">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-100 h-100 object-fit-cover" id="main-product-img">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=1000&auto=format&fit=crop" alt="{{ product.name }}" class="w-100 h-100 object-fit-cover">
+                    {% endif %}
+                </div>
+                {% if product.is_on_sale %}
+                <span class="sale-badge">Khuyến mãi</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Purchase Information -->
+        <div class="col-12 col-md-6 col-lg-6">
+            <div class="ps-0 ps-md-2 ps-lg-4">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-uppercase small text-muted letter-spacing-1 fw-semibold">{{ product.category.name }}</span>
+                    <!-- Rating pill -->
+                    <div class="d-flex align-items-center bg-light px-2 py-1 rounded-pill small border">
+                        <i class="bi bi-star-fill text-warning me-1"></i>
+                        <span class="fw-bold text-dark">{{ product.get_average_rating }}</span>
+                        <span class="text-muted ms-1">({{ reviews.count }})</span>
+                    </div>
+                </div>
+
+                <h1 class="h2 fw-bold serif-font text-dark mb-2">{{ product.name }}</h1>
+
+                <!-- Price Section -->
+                <div class="d-flex align-items-baseline gap-2 mb-3 pb-3 border-bottom">
+                    <span class="h3 fw-bold text-dark mb-0">{{ product.get_final_price|vnd }}</span>
+                    {% if product.is_on_sale %}
+                    <span class="text-muted text-decoration-line-through fs-5">{{ product.price|vnd }}</span>
+                    <span class="badge bg-danger rounded-pill text-uppercase small px-2">Giảm giá</span>
+                    {% endif %}
+                </div>
+
+                <!-- Product Add to Cart Form -->
+                {% if variants %}
+                <form id="add-to-cart-form" method="post" action="">
+                    {% csrf_token %}
+
+                    <!-- Select Size & Color Variant -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label small fw-bold text-uppercase letter-spacing-1 mb-0">
+                                1. Chọn Kích Cỡ & Phân Loại:
+                            </label>
+                            <span class="small text-muted"><i class="bi bi-rulers me-1"></i> Chuẩn form dáng</span>
+                        </div>
+                        
+                        <div class="variant-btn-group d-flex flex-wrap">
+                            {% for variant in variants %}
+                            <input type="radio" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" data-stock="{{ variant.stock_quantity }}" {% if forloop.first %}checked{% endif %}>
+                            <label for="variant_{{ variant.id }}">
+                                Size {{ variant.size }} - {{ variant.color }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Stock Status Alert -->
+                    <div id="variant-stock-info" class="small mb-3 p-2 bg-light rounded-2 border">
+                        {% with first_variant=variants.first %}
+                            {% if first_variant.stock_quantity > 0 %}
+                            <span class="text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i> Còn hàng ({{ first_variant.stock_quantity }} sản phẩm sẵn có tại kho)</span>
+                            {% else %}
+                            <span class="text-danger fw-semibold"><i class="bi bi-x-circle-fill me-1"></i> Hết hàng - Vui lòng chọn phân loại khác</span>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="mb-4" style="max-width: 140px;">
+                        <label class="form-label small fw-bold text-uppercase">Số lượng:</label>
+                        <input type="number" name="quantity" class="form-control text-center rounded-0 border-dark" value="1" min="1" max="99">
+                    </div>
+
+                    <!-- Add to Cart Action (Desktop) -->
+                    <div class="d-grid gap-2 mb-4">
+                        <button type="submit" id="add-to-cart-btn" class="btn btn-fashion-dark py-3 rounded-0">
+                            <i class="bi bi-bag-plus me-2 fs-5 align-middle"></i> THÊM VÀO GIỎ HÀNG
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="alert alert-warning rounded-2 border">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Sản phẩm này hiện đang cập nhật thêm phân loại size và màu. Vui lòng quay lại sau!
+                </div>
+                {% endif %}
+
+                <!-- Description Accordion / Card -->
+                <div class="mt-4 pt-3 border-top">
+                    <h5 class="fw-bold mb-2 serif-font">Mô Tả Chi Tiết</h5>
+                    <div class="text-secondary small line-height-lg" style="white-space: pre-line;">
+                        {{ product.description }}
+                    </div>
+                </div>
+
+                <!-- Shipping Details / Guarantees -->
+                <div class="mt-4 p-3 bg-light rounded-3 border small">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-truck fs-5 me-2 text-dark"></i>
+                        <span><strong>Giao hàng toàn quốc:</strong> Miễn phí vận chuyển cho đơn hàng từ 500.000đ</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-arrow-repeat fs-5 me-2 text-dark"></i>
+                        <span><strong>Đổi trả 30 ngày:</strong> Hỗ trợ đổi size tận nơi dễ dàng và nhanh chóng</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-shield-check fs-5 me-2 text-dark"></i>
+                        <span><strong>Chính hãng 100%:</strong> Cam kết chất liệu cao cấp và chuẩn form</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REVIEWS SECTION -->
+    <div class="row mt-5 pt-4 border-top">
+        <div class="col-12 col-lg-8">
+            <h3 class="fw-bold serif-font mb-4">Đánh Giá Từ Khách Hàng ({{ reviews.count }})</h3>
+
+            <!-- Review list -->
+            {% for r in reviews %}
+            <div class="card border-0 border-bottom rounded-0 py-3 mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <strong class="text-dark">{{ r.user.get_full_name|default:r.user.username }}</strong>
+                        <span class="text-warning ms-2">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <small class="text-muted">{{ r.created_at|date:"d/m/Y" }}</small>
+                </div>
+                <p class="text-secondary small mb-0">{{ r.comment }}</p>
+            </div>
+            {% empty %}
+            <p class="text-muted small">Chưa có đánh giá nào cho sản phẩm này. Hãy là người đầu tiên trải nghiệm và chia sẻ!</p>
+            {% endfor %}
+
+            <!-- Submit Review Form -->
+            <div class="card border-0 bg-light p-4 rounded-3 mt-4">
+                <h5 class="fw-bold mb-3 serif-font">Gửi đánh giá của bạn</h5>
+                {% if user.is_authenticated %}
+                <form action="{% url 'reviews:add_review' product.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">{{ review_form.rating.label }}</label>
+                        {{ review_form.rating }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">{{ review_form.comment.label }}</label>
+                        {{ review_form.comment }}
+                    </div>
+                    <button type="submit" class="btn btn-fashion-dark btn-sm px-4 rounded-1">
+                        Gửi Đánh Giá
+                    </button>
+                </form>
+                {% else %}
+                <p class="small text-muted mb-0">
+                    Vui lòng <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="fw-bold text-dark text-decoration-underline">đăng nhập</a> để viết đánh giá cho sản phẩm này.
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- RELATED PRODUCTS -->
+    {% if related_products %}
+    <div class="row mt-5 pt-4 border-top">
+        <div class="col-12 mb-3">
+            <h3 class="fw-bold serif-font">Có Thể Bạn Cũng Thích</h3>
+        </div>
+        {% for rel in related_products %}
+        <div class="col-6 col-md-3">
+            <div class="product-card h-100 d-flex flex-column rounded-2 overflow-hidden bg-white shadow-sm border">
+                <div class="product-image-wrapper">
+                    <a href="{% url 'products:product_detail' rel.slug %}">
+                        {% if rel.image %}
+                        <img src="{{ rel.image.url }}" alt="{{ rel.name }}" loading="lazy">
+                        {% else %}
+                        <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop" alt="{{ rel.name }}" loading="lazy">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="product-info flex-grow-1 d-flex flex-column p-2 p-sm-3">
+                    <h3 class="product-title">
+                        <a href="{% url 'products:product_detail' rel.slug %}">{{ rel.name }}</a>
+                    </h3>
+                    <div class="product-price-current mt-auto">{{ rel.get_final_price|vnd }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<!-- Sticky Bottom Bar on Mobile (Cố định ở dưới màn hình điện thoại khi lướt xem sản phẩm) -->
+{% if variants %}
+<div class="mobile-sticky-buy-bar d-flex d-md-none align-items-center justify-content-between px-3 py-2 bg-white border-top shadow-lg">
+    <div>
+        <div class="small text-muted" style="font-size: 0.72rem;">Giá bán:</div>
+        <div class="fw-bold text-dark h6 mb-0">{{ product.get_final_price|vnd }}</div>
+    </div>
+    <button type="button" class="btn btn-dark rounded-0 px-4 py-2 fw-bold small d-flex align-items-center gap-2" onclick="triggerMobileAddToCart();">
+        <i class="bi bi-bag-plus"></i> Thêm giỏ hàng
+    </button>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Xử lý động action của form khi chọn biến thể
+    const form = document.getElementById('add-to-cart-form');
+    function updateCartFormAction() {
+        const checkedVariant = document.querySelector('input[name="variant_id"]:checked');
+        if (checkedVariant && form) {
+            form.action = `/cart/add/${checkedVariant.value}/`;
+        }
+    }
+    const radios = document.querySelectorAll('input[name="variant_id"]');
+    radios.forEach(r => r.addEventListener('change', updateCartFormAction));
+    updateCartFormAction();
+
+    // Trigger mobile add to cart
+    function triggerMobileAddToCart() {
+        const btn = document.getElementById('add-to-cart-btn');
+        if (btn) {
+            btn.click();
+        } else if (form) {
+            form.submit();
+        }
+    }
+</script>
+{% endblock %}

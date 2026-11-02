@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Quản Lý Danh Mục | FashionStore Admin{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <span class="text-uppercase small text-muted">Hệ thống quản trị</span>
+            <h2 class="fw-bold serif-font mb-0">Quản Lý Danh Mục Thời Trang</h2>
+        </div>
+        <a href="{% url 'products:admin_product_list' %}" class="btn btn-fashion-outline btn-sm">
+            <i class="bi bi-arrow-left me-1"></i> Quản lý sản phẩm
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Form Add Category -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm p-4 rounded-0 bg-white">
+                <h5 class="fw-bold mb-3"><i class="bi bi-folder-plus me-1"></i> Thêm Danh Mục Mới</h5>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">{{ form.name.label }}</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">{{ form.description.label }}</label>
+                        {{ form.description }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">{{ form.image.label }}</label>
+                        {{ form.image }}
+                    </div>
+                    <button type="submit" class="btn btn-fashion-dark w-100">
+                        Lưu Danh Mục
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Categories Table -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="fw-bold mb-0">Danh Sách Danh Mục ({{ categories.count }})</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small text-uppercase">
+                            <tr>
+                                <th class="ps-3">Ảnh</th>
+                                <th>Tên danh mục</th>
+                                <th>Đường dẫn slug</th>
+                                <th>Số sản phẩm</th>
+                                <th class="text-end pe-3">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in categories %}
+                            <tr>
+                                <td class="ps-3" style="width: 70px;">
+                                    {% if c.image %}
+                                    <img src="{{ c.image.url }}" alt="{{ c.name }}" style="width: 45px; height: 45px; object-fit: cover;">
+                                    {% else %}
+                                    <div class="bg-light text-muted d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                        <i class="bi bi-folder"></i>
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <strong>{{ c.name }}</strong>
+                                    {% if c.description %}
+                                    <div class="small text-muted">{{ c.description|truncatechars:40 }}</div>
+                                    {% endif %}
+                                </td>
+                                <td class="small text-muted font-monospace">/category/{{ c.slug }}/</td>
+                                <td>
+                                    <span class="badge bg-secondary rounded-pill px-3 py-2">{{ c.products.count }} sản phẩm</span>
+                                </td>
+                                <td class="text-end pe-3">
+                                    <form action="{% url 'products:admin_category_delete' c.pk %}" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa danh mục này?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i> Xóa
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">Chưa có danh mục nào. Hãy tạo danh mục như: Áo sơ mi, Áo thun, Váy đầm...</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

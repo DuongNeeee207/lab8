@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lịch Sử Đơn Hàng | FashionStore{% endblock %}
+
+{% block content %}
+<div class="container py-3 py-md-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom gap-2">
+        <div>
+            <h1 class="h3 fw-bold serif-font mb-0">Lịch Sử Mua Hàng</h1>
+            <span class="text-muted small">Theo dõi các đơn hàng bạn đã đặt tại FashionStore</span>
+        </div>
+        <a href="{% url 'accounts:profile' %}" class="small text-dark text-decoration-underline fw-semibold">
+            <i class="bi bi-person me-1"></i> Hồ sơ của tôi
+        </a>
+    </div>
+
+    {% if orders %}
+    <!-- 1. Desktop Table View -->
+    <div class="d-none d-md-block card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light small text-uppercase">
+                    <tr>
+                        <th class="ps-4 py-3">Mã đơn hàng</th>
+                        <th class="py-3">Ngày đặt</th>
+                        <th class="py-3">Người nhận</th>
+                        <th class="py-3">Tổng tiền</th>
+                        <th class="py-3">Phương thức</th>
+                        <th class="py-3">Trạng thái</th>
+                        <th class="text-end pe-4 py-3">Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr class="border-bottom">
+                        <td class="ps-4 fw-bold">#{{ order.order_number }}</td>
+                        <td class="small">{{ order.created_at|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <div>{{ order.full_name }}</div>
+                            <small class="text-muted">{{ order.phone_number }}</small>
+                        </td>
+                        <td>
+                            <strong class="text-dark">{{ order.total_amount|vnd }}</strong>
+                            <div class="small text-muted">{{ order.items.count }} món</div>
+                        </td>
+                        <td><span class="badge bg-light text-dark border">{{ order.get_payment_method_display }}</span></td>
+                        <td>
+                            {% if order.order_status == 'Pending' %}
+                            <span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i> Chờ xử lý</span>
+                            {% elif order.order_status == 'Confirmed' %}
+                            <span class="badge bg-info text-dark"><i class="bi bi-check2 me-1"></i> Đã xác nhận</span>
+                            {% elif order.order_status == 'Shipping' %}
+                            <span class="badge bg-primary"><i class="bi bi-truck me-1"></i> Đang giao</span>
+                            {% elif order.order_status == 'Delivered' %}
+                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Đã giao</span>
+                            {% elif order.order_status == 'Cancelled' %}
+                            <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i> Đã hủy</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end pe-4">
+                            <a href="{% url 'orders:detail' order.order_number %}" class="btn btn-sm btn-outline-dark rounded-0">
+                                Xem <i class="bi bi-chevron-right ms-1"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2. Mobile Cards View -->
+    <div class="d-md-none d-flex flex-column gap-3">
+        {% for order in orders %}
+        <div class="card border rounded-3 p-3 shadow-sm bg-white">
+            <div class="d-flex justify-content-between align-items-center pb-2 border-bottom mb-2">
+                <div>
+                    <span class="fw-bold">#{{ order.order_number }}</span>
+                    <div class="small text-muted" style="font-size: 0.75rem;">{{ order.created_at|date:"d/m/Y H:i" }}</div>
+                </div>
+                <div>
+                    {% if order.order_status == 'Pending' %}
+                    <span class="badge bg-warning text-dark small">Chờ xử lý</span>
+                    {% elif order.order_status == 'Confirmed' %}
+                    <span class="badge bg-info text-dark small">Đã xác nhận</span>
+                    {% elif order.order_status == 'Shipping' %}
+                    <span class="badge bg-primary small">Đang giao</span>
+                    {% elif order.order_status == 'Delivered' %}
+                    <span class="badge bg-success small">Đã giao</span>
+                    {% elif order.order_status == 'Cancelled' %}
+                    <span class="badge bg-danger small">Đã hủy</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-2 small">
+                <span class="text-muted">Tổng tiền ({{ order.items.count }} món):</span>
+                <strong class="text-dark">{{ order.total_amount|vnd }}</strong>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                <span class="badge bg-light text-dark border small">{{ order.get_payment_method_display }}</span>
+                <a href="{% url 'orders:detail' order.order_number %}" class="btn btn-sm btn-dark rounded-0 px-3">
+                    Xem chi tiết <i class="bi bi-chevron-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="text-center py-5">
+        <div class="py-5 bg-light rounded-3 border">
+            <i class="bi bi-inbox fs-1 text-muted"></i>
+            <h4 class="fw-bold mt-3">Bạn Chưa Có Đơn Hàng Nào</h4>
+            <p class="text-muted small">Hãy bắt đầu lựa chọn những thiết kế thời trang hiện đại phù hợp với phong cách của bạn!</p>
+            <a href="{% url 'products:product_list' %}" class="btn btn-fashion-dark mt-2 rounded-2">
+                Khám phá cửa hàng ngay
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Quản Lý Sản Phẩm | FashionStore Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-lg-5 py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <span class="text-uppercase small text-muted letter-spacing-1">Hệ thống quản trị</span>
+            <h2 class="fw-bold mb-0 serif-font">Quản Lý Sản Phẩm Thời Trang</h2>
+        </div>
+        <div class="d-flex gap-2 mt-3 mt-md-0">
+            <a href="{% url 'products:admin_category_list' %}" class="btn btn-fashion-outline btn-sm">
+                <i class="bi bi-folder me-1"></i> Quản lý danh mục
+            </a>
+            <a href="{% url 'products:admin_product_add' %}" class="btn btn-fashion-dark btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Thêm sản phẩm mới
+            </a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark small text-uppercase">
+                    <tr>
+                        <th class="ps-4">Ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Giá bán</th>
+                        <th>Tồn kho</th>
+                        <th>Hiển thị</th>
+                        <th>Ngày tạo</th>
+                        <th class="text-end pe-4">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in products %}
+                    <tr>
+                        <td class="ps-4" style="width: 80px;">
+                            {% if p.image %}
+                            <img src="{{ p.image.url }}" alt="{{ p.name }}" class="rounded-0" style="width: 50px; height: 60px; object-fit: cover;">
+                            {% else %}
+                            <div class="bg-light text-muted d-flex align-items-center justify-content-center" style="width: 50px; height: 60px;">
+                                <i class="bi bi-image"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'products:product_detail' p.slug %}" target="_blank" class="fw-bold text-dark text-decoration-none">
+                                {{ p.name }}
+                            </a>
+                            <div class="small text-muted">Mã: FS-{{ p.id }}</div>
+                        </td>
+                        <td><span class="badge bg-light text-dark border">{{ p.category.name }}</span></td>
+                        <td>
+                            <div class="fw-bold">{{ p.get_final_price|vnd }}</div>
+                            {% if p.is_on_sale %}
+                            <small class="text-muted text-decoration-line-through">{{ p.price|vnd }}</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if p.get_total_stock > 0 %}
+                            <span class="text-success fw-bold">{{ p.get_total_stock }} cái</span>
+                            {% else %}
+                            <span class="badge bg-danger">Hết hàng</span>
+                            {% endif %}
+                            <div class="small text-muted">({{ p.variants.count }} biến thể)</div>
+                        </td>
+                        <td>
+                            {% if p.is_active %}
+                            <span class="badge bg-success-subtle text-success">Đang bật</span>
+                            {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary">Đã ẩn</span>
+                            {% endif %}
+                        </td>
+                        <td class="small">{{ p.created_at|date:"d/m/Y" }}</td>
+                        <td class="text-end pe-4">
+                            <a href="{% url 'products:admin_variants' p.pk %}" class="btn btn-sm btn-outline-primary me-1" title="Quản lý biến thể size/màu">
+                                <i class="bi bi-layers"></i> Biến thể
+                            </a>
+                            <a href="{% url 'products:admin_product_edit' p.pk %}" class="btn btn-sm btn-outline-secondary me-1" title="Sửa sản phẩm">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{% url 'products:admin_product_delete' p.pk %}" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-muted">Chưa có sản phẩm nào trong hệ thống. Hãy bấm "Thêm sản phẩm mới" để bắt đầu.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

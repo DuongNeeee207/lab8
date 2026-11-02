@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Về Chúng Tôi | FashionStore{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center mb-5">
+            <span class="text-uppercase small text-muted letter-spacing-1">Câu chuyện thương hiệu</span>
+            <h1 class="serif-font display-5 fw-bold mt-2 mb-4">Thời Trang Bền Vững & Tinh Tế</h1>
+            <p class="lead text-secondary">
+                FashionStore được xây dựng trên triết lý tối giản (Minimalism) - nơi mỗi bộ trang phục không chỉ tôn vinh vóc dáng mà còn mang lại cảm giác thoải mái tự tin tuyệt đối cho người mặc.
+            </p>
+        </div>
+    </div>
+
+    <div class="row g-5 align-items-center mb-5">
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1000&auto=format&fit=crop" class="img-fluid" alt="Fashion Store Interior">
+        </div>
+        <div class="col-md-6">
+            <h3 class="fw-bold mb-3">Sứ mệnh của FashionStore</h3>
+            <p class="text-secondary">
+                Chúng tôi không chạy theo những xu hướng thời trang nhanh ngắn ngủi. Thay vào đó, FashionStore tập trung vào những phom dáng cơ bản (Essentials) nhưng được nâng cấp bằng chất liệu dệt tự nhiên, thân thiện với môi trường và có độ bền bỉ qua năm tháng.
+            </p>
+            <p class="text-secondary">
+                Dù bạn là một nhân viên công sở tìm kiếm chiếc áo sơ mi thanh lịch hay một người trẻ yêu thích sự phóng khoáng năng động của áo hoodie và quần jeans, FashionStore luôn có giải pháp trang phục hoàn hảo dành cho bạn.
+            </p>
+            <div class="row g-3 mt-2">
+                <div class="col-6">
+                    <div class="border p-3 text-center">
+                        <h4 class="fw-bold mb-1">100%</h4>
+                        <small class="text-muted text-uppercase">Vải tự nhiên</small>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="border p-3 text-center">
+                        <h4 class="fw-bold mb-1">30 Ngày</h4>
+                        <small class="text-muted text-uppercase">Đổi hàng miễn phí</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

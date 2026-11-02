@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thanh Toán & Đặt Hàng | FashionStore{% endblock %}
+
+{% block content %}
+<div class="container py-3 py-md-5">
+    <div class="text-center mb-4 mb-md-5">
+        <span class="text-uppercase small text-muted letter-spacing-1">Quy trình mua hàng an toàn</span>
+        <h1 class="serif-font fw-bold mt-1 h2">Thông Tin Thanh Toán & Giao Hàng</h1>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="row g-4 g-lg-5 align-items-start">
+            <!-- Left: Shipping Information Form -->
+            <div class="col-12 col-lg-7">
+                <div class="card border-0 shadow-sm p-3 p-sm-4 p-md-5 rounded-3 bg-white">
+                    <h4 class="fw-bold mb-4 serif-font"><i class="bi bi-geo-alt me-2 text-dark"></i> 1. Địa Chỉ Nhận Hàng</h4>
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger py-2 small rounded-2">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold">{{ form.full_name.label }} <span class="text-danger">*</span></label>
+                            {{ form.full_name }}
+                            {% if form.full_name.errors %}
+                            <div class="text-danger small mt-1">{{ form.full_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label class="form-label small fw-bold">{{ form.phone_number.label }} <span class="text-danger">*</span></label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}
+                            <div class="text-danger small mt-1">{{ form.phone_number.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">{{ form.shipping_address.label }} <span class="text-danger">*</span></label>
+                            {{ form.shipping_address }}
+                            {% if form.shipping_address.errors %}
+                            <div class="text-danger small mt-1">{{ form.shipping_address.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">{{ form.note.label }}</label>
+                            {{ form.note }}
+                        </div>
+                    </div>
+
+                    <h4 class="fw-bold mt-5 mb-3 serif-font"><i class="bi bi-cash-stack me-2 text-dark"></i> 2. Hình Thức Thanh Toán</h4>
+                    <div class="border p-3 bg-light rounded-3 d-flex align-items-center">
+                        <input class="form-check-input me-3 mt-0 flex-shrink-0" type="radio" name="payment_method" id="payCOD" value="COD" checked>
+                        <label class="form-check-label w-100" for="payCOD">
+                            <div class="fw-bold">Thanh toán khi nhận hàng (COD - Cash On Delivery)</div>
+                            <small class="text-muted">Bạn chỉ thanh toán bằng tiền mặt khi shipper giao kiện hàng đến tận nơi và bạn đã kiểm tra sản phẩm.</small>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Order Summary -->
+            <div class="col-12 col-lg-5">
+                <div class="card border-0 shadow-sm p-4 rounded-3 bg-light sticky-top" style="top: 80px;">
+                    <h5 class="fw-bold mb-3 text-uppercase small letter-spacing-1">Đơn Hàng Của Bạn ({{ items.count }} món)</h5>
+
+                    <div class="divide-y mb-3" style="max-height: 320px; overflow-y: auto;">
+                        {% for item in items %}
+                        <div class="d-flex align-items-center py-2 border-bottom">
+                            {% if item.product_variant.product.image %}
+                            <img src="{{ item.product_variant.product.image.url }}" alt="{{ item.product_variant.product.name }}" class="rounded-2 me-3 border flex-shrink-0" style="width: 50px; height: 62px; object-fit: cover;">
+                            {% else %}
+                            <div class="bg-white border rounded-2 me-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 50px; height: 62px;">
+                                <i class="bi bi-image text-muted"></i>
+                            </div>
+                            {% endif %}
+                            <div class="flex-grow-1 min-w-0 pe-2">
+                                <h6 class="mb-0 small fw-bold text-truncate">{{ item.product_variant.product.name }}</h6>
+                                <small class="text-muted">Size: {{ item.product_variant.size }} | {{ item.product_variant.color }} | x{{ item.quantity }}</small>
+                            </div>
+                            <div class="small fw-bold text-end text-nowrap">
+                                {{ item.get_subtotal|vnd }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2 small">
+                        <span class="text-muted">Tạm tính tiền hàng:</span>
+                        <span class="fw-bold">{{ total_price|vnd }}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3 small">
+                        <span class="text-muted">Cước vận chuyển:</span>
+                        <span class="text-success fw-bold"><i class="bi bi-check-circle me-1"></i> MIỄN PHÍ</span>
+                    </div>
+
+                    <hr class="my-3">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="fw-bold">TỔNG CỘNG:</span>
+                        <span class="h4 fw-bold text-dark mb-0">{{ total_price|vnd }}</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-fashion-dark w-100 py-3 rounded-0 text-uppercase">
+                        <i class="bi bi-check-circle me-1"></i> Xác Nhận Đặt Hàng (COD)
+                    </button>
+
+                    <div class="text-center mt-3">
+                        <a href="{% url 'cart:detail' %}" class="small text-muted text-decoration-underline">
+                            Quay lại chỉnh sửa giỏ hàng
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

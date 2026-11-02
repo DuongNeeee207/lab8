@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if selected_category %}{{ selected_category.name }} | {% elif search_query %}Tìm kiếm: "{{ search_query }}" | {% endif %}FashionStore
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3 px-sm-4 px-lg-5 py-3 py-md-4">
+    <!-- Breadcrumb & Header Title -->
+    <div class="border-bottom pb-3 mb-3 mb-md-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb small text-uppercase mb-1">
+                <li class="breadcrumb-item"><a href="{% url 'core:home' %}" class="text-decoration-none text-muted">Trang chủ</a></li>
+                <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">
+                    {% if selected_category %}{{ selected_category.name }}{% elif search_query %}Tìm kiếm: "{{ search_query }}"{% else %}Tất cả sản phẩm{% endif %}
+                </li>
+            </ol>
+        </nav>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+            <div>
+                <h1 class="h3 fw-bold serif-font mb-0">
+                    {% if selected_category %}{{ selected_category.name }}{% elif search_query %}Kết quả: "{{ search_query }}"{% else %}Bộ Sưu Tập Thời Trang{% endif %}
+                </h1>
+                <small class="text-muted">Tìm thấy <span class="fw-semibold text-dark">{{ total_count }}</span> sản phẩm chất lượng</small>
+            </div>
+
+            <!-- Desktop Sort Bar -->
+            <div class="d-none d-md-flex align-items-center">
+                <label class="small text-muted me-2 text-nowrap">Sắp xếp theo:</label>
+                <select class="form-select form-select-sm rounded-1 border-secondary-subtle" style="width: 200px;" onchange="location = this.value;">
+                    <option value="?sort=newest{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" {% if sort_by == 'newest' %}selected{% endif %}>Mới nhất</option>
+                    <option value="?sort=price_asc{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" {% if sort_by == 'price_asc' %}selected{% endif %}>Giá tăng dần</option>
+                    <option value="?sort=price_desc{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" {% if sort_by == 'price_desc' %}selected{% endif %}>Giá giảm dần</option>
+                    <option value="?sort=name{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" {% if sort_by == 'name' %}selected{% endif %}>Tên A - Z</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Filter & Sort Toolbar (Chỉ hiện trên Mobile < 768px) -->
+    <div class="d-flex d-md-none align-items-center justify-content-between gap-2 mb-3 p-2 bg-light rounded-0 border">
+        <button class="btn btn-sm btn-dark flex-grow-1 d-flex align-items-center justify-content-center gap-2 py-2 rounded-0 text-uppercase" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileFilterOffcanvas" aria-controls="mobileFilterOffcanvas">
+            <i class="bi bi-funnel"></i>
+            <span>Bộ Lọc {% if selected_category or price_range %}(Đang bật){% endif %}</span>
+        </button>
+
+        <div class="flex-grow-1">
+            <select class="form-select form-select-sm rounded-0 border-secondary-subtle py-2" onchange="location = this.value;">
+                <option value="?sort=newest{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" {% if sort_by == 'newest' %}selected{% endif %}>Mới nhất</option>
+                <option value="?sort=price_asc{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" {% if sort_by == 'price_asc' %}selected{% endif %}>Giá tăng dần</option>
+                <option value="?sort=price_desc{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" {% if sort_by == 'price_desc' %}selected{% endif %}>Giá giảm dần</option>
+                <option value="?sort=name{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" {% if sort_by == 'name' %}selected{% endif %}>Tên A - Z</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Active Filter Tags (Nếu có) -->
+    {% if selected_category or price_range %}
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-3 pb-2 border-bottom">
+        <span class="small text-muted">Đang lọc:</span>
+        {% if selected_category %}
+        <span class="badge bg-dark rounded-pill py-2 px-3 fw-normal">
+            {{ selected_category.name }}
+            <a href="?{% if sort_by %}sort={{ sort_by }}&{% endif %}{% if price_range %}price={{ price_range }}{% endif %}" class="text-white ms-2 text-decoration-none">&times;</a>
+        </span>
+        {% endif %}
+        {% if price_range %}
+        <span class="badge bg-secondary rounded-pill py-2 px-3 fw-normal">
+            {% if price_range == 'under_300' %}Dưới 300.000đ{% elif price_range == '300_700' %}300k - 700k{% elif price_range == 'over_700' %}Trên 700.000đ{% endif %}
+            <a href="?{% if selected_category %}category={{ selected_category.slug }}&{% endif %}{% if sort_by %}sort={{ sort_by }}{% endif %}" class="text-white ms-2 text-decoration-none">&times;</a>
+        </span>
+        {% endif %}
+        <a href="{% url 'products:product_list' %}" class="small text-danger ms-2 text-decoration-underline">Xóa tất cả</a>
+    </div>
+    {% endif %}
+
+    <div class="row g-3 g-lg-4">
+        <!-- Desktop Sidebar Filters (Ẩn trên mobile, hiện từ md trở lên) -->
+        <div class="col-md-4 col-lg-3 d-none d-md-block">
+            <div class="card border-0 bg-light p-4 rounded-3 sticky-top shadow-sm" style="top: 80px;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-uppercase small letter-spacing-1 mb-0">Bộ Lọc Danh Mục</h5>
+                    <i class="bi bi-tag text-muted"></i>
+                </div>
+                <ul class="list-unstyled mb-4 filter-category-list">
+                    <li class="py-1">
+                        <a href="{% url 'products:product_list' %}" class="filter-link {% if not selected_category %}active fw-bold text-dark{% else %}text-secondary{% endif %}">
+                            Tất cả sản phẩm
+                        </a>
+                    </li>
+                    {% for cat in categories %}
+                    <li class="py-1">
+                        <a href="{% url 'products:category_products' cat.slug %}" class="filter-link d-flex justify-content-between align-items-center {% if selected_category.slug == cat.slug %}active fw-bold text-dark{% else %}text-secondary{% endif %}">
+                            <span>{{ cat.name }}</span>
+                            <span class="badge rounded-pill bg-white text-muted border small">{{ cat.products.count }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <hr class="my-3">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-uppercase small letter-spacing-1 mb-0">Khoảng Giá</h5>
+                    <i class="bi bi-cash-stack text-muted"></i>
+                </div>
+                <div class="d-flex flex-column gap-2 small">
+                    <a href="?{% if selected_category %}category={{ selected_category.slug }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}" class="filter-price-link py-1 px-2 rounded-1 {% if not price_range %}active bg-dark text-white fw-semibold{% else %}text-secondary bg-white border{% endif %}">
+                        Tất cả mức giá
+                    </a>
+                    <a href="?price=under_300{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="filter-price-link py-1 px-2 rounded-1 {% if price_range == 'under_300' %}active bg-dark text-white fw-semibold{% else %}text-secondary bg-white border{% endif %}">
+                        Dưới 300.000 VNĐ
+                    </a>
+                    <a href="?price=300_700{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="filter-price-link py-1 px-2 rounded-1 {% if price_range == '300_700' %}active bg-dark text-white fw-semibold{% else %}text-secondary bg-white border{% endif %}">
+                        300.000 VNĐ - 700.000 VNĐ
+                    </a>
+                    <a href="?price=over_700{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="filter-price-link py-1 px-2 rounded-1 {% if price_range == 'over_700' %}active bg-dark text-white fw-semibold{% else %}text-secondary bg-white border{% endif %}">
+                        Trên 700.000 VNĐ
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Grid (2 columns on mobile, 3 columns on tablet/desktop, 4 columns on large desktop) -->
+        <div class="col-12 col-md-8 col-lg-9">
+            <div class="row g-2 g-sm-3 g-lg-4">
+                {% for product in page_obj %}
+                <div class="col-6 col-sm-6 col-lg-4">
+                    <div class="product-card h-100 d-flex flex-column rounded-0 overflow-hidden bg-white shadow-sm border">
+                        <div class="product-image-wrapper position-relative">
+                            <a href="{% url 'products:product_detail' product.slug %}" class="d-block w-100 h-100">
+                                {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                                {% else %}
+                                <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800&auto=format&fit=crop" alt="{{ product.name }}" loading="lazy">
+                                {% endif %}
+                            </a>
+                            {% if product.is_on_sale %}
+                            <span class="sale-badge">Khuyến mãi</span>
+                            {% endif %}
+                            <div class="product-quick-view d-none d-sm-flex">
+                                <a href="{% url 'products:product_detail' product.slug %}" class="btn btn-sm btn-dark w-100 rounded-0 py-2">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="product-info flex-grow-1 d-flex flex-column p-2 p-sm-3">
+                            <div class="product-category-text">{{ product.category.name }}</div>
+                            <h3 class="product-title" title="{{ product.name }}">
+                                <a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a>
+                            </h3>
+
+                            <!-- Sizes available badges -->
+                            <div class="d-flex flex-wrap gap-1 mb-2 mt-1">
+                                {% for variant in product.variants.all|slice:":4" %}
+                                <span class="badge bg-light text-secondary border rounded-1 font-monospace" style="font-size: 0.65rem;">{{ variant.size }}</span>
+                                {% endfor %}
+                            </div>
+
+                            <div class="mt-auto pt-2 border-top d-flex flex-wrap align-items-center justify-content-between gap-1">
+                                <div>
+                                    <div class="product-price-current">{{ product.get_final_price|vnd }}</div>
+                                    {% if product.is_on_sale %}
+                                    <div class="product-price-old small">{{ product.price|vnd }}</div>
+                                    {% endif %}
+                                </div>
+                                <span class="small text-muted rating-pill"><i class="bi bi-star-fill text-warning"></i> {{ product.get_average_rating }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5">
+                    <div class="py-5 bg-light rounded-3 border">
+                        <i class="bi bi-search fs-1 text-muted"></i>
+                        <h4 class="fw-bold mt-3">Không tìm thấy sản phẩm phù hợp</h4>
+                        <p class="text-muted small px-3">Vui lòng thử tìm kiếm với từ khóa khác hoặc xóa bớt tiêu chí lọc.</p>
+                        <a href="{% url 'products:product_list' %}" class="btn btn-fashion-dark mt-2">Xem tất cả sản phẩm</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <nav class="mt-5 mb-4" aria-label="Page navigation">
+                <ul class="pagination pagination-sm justify-content-center flex-wrap gap-1">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link rounded-1 text-dark" href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" aria-label="Previous">
+                            &laquo; Trước
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                        <a class="page-link rounded-1 {% if page_obj.number == num %}bg-dark border-dark text-white fw-bold{% else %}text-dark{% endif %}" href="?page={{ num }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}">
+                            {{ num }}
+                        </a>
+                    </li>
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link rounded-1 text-dark" href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}{% if price_range %}&price={{ price_range }}{% endif %}" aria-label="Next">
+                            Sau &raquo;
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Filter Offcanvas (Mở khi bấm nút Bộ Lọc trên điện thoại) -->
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="mobileFilterOffcanvas" aria-labelledby="mobileFilterOffcanvasLabel" style="height: 75vh;">
+    <div class="offcanvas-header border-bottom py-3">
+        <h5 class="offcanvas-title fw-bold" id="mobileFilterOffcanvasLabel">
+            <i class="bi bi-funnel me-2"></i> BỘ LỌC SẢN PHẨM
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-4">
+        <!-- Danh mục -->
+        <h6 class="fw-bold text-uppercase small text-muted mb-2">1. Chọn Danh Mục</h6>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a href="{% url 'products:product_list' %}" class="btn btn-sm {% if not selected_category %}btn-dark{% else %}btn-outline-secondary{% endif %} rounded-0">
+                Tất cả
+            </a>
+            {% for cat in categories %}
+            <a href="{% url 'products:category_products' cat.slug %}" class="btn btn-sm {% if selected_category.slug == cat.slug %}btn-dark{% else %}btn-outline-secondary{% endif %} rounded-0">
+                {{ cat.name }} ({{ cat.products.count }})
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Khoảng giá -->
+        <h6 class="fw-bold text-uppercase small text-muted mb-2">2. Khoảng Giá</h6>
+        <div class="d-flex flex-column gap-2 mb-4">
+            <a href="?{% if selected_category %}category={{ selected_category.slug }}&{% endif %}{% if sort_by %}sort={{ sort_by }}&{% endif %}" class="p-2 border rounded-0 text-decoration-none {% if not price_range %}bg-dark text-white fw-bold{% else %}text-dark bg-light{% endif %}">
+                Tất cả mức giá
+            </a>
+            <a href="?price=under_300{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="p-2 border rounded-0 text-decoration-none {% if price_range == 'under_300' %}bg-dark text-white fw-bold{% else %}text-dark bg-light{% endif %}">
+                Dưới 300.000 VNĐ
+            </a>
+            <a href="?price=300_700{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="p-2 border rounded-0 text-decoration-none {% if price_range == '300_700' %}bg-dark text-white fw-bold{% else %}text-dark bg-light{% endif %}">
+                300.000 VNĐ - 700.000 VNĐ
+            </a>
+            <a href="?price=over_700{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if sort_by %}&sort={{ sort_by }}{% endif %}" class="p-2 border rounded-0 text-decoration-none {% if price_range == 'over_700' %}bg-dark text-white fw-bold{% else %}text-dark bg-light{% endif %}">
+                Trên 700.000 VNĐ
+            </a>
+        </div>
+
+        <div class="d-grid gap-2 pt-2">
+            <button type="button" class="btn btn-dark py-2 rounded-0 fw-bold text-uppercase" data-bs-dismiss="offcanvas">
+                Đóng & Xem Sản Phẩm
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
