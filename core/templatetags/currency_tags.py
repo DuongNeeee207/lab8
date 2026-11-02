@@ -49,3 +49,4 @@ def vnd_no_symbol(value):
         return f"{val:,}".replace(",", ".")
     except (ValueError, TypeError):
         return str(value)
+

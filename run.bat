@@ -12,3 +12,4 @@ echo [2] Nhấn Ctrl + C để dừng máy chủ.
 echo.
 "C:\Users\ThinkPad\AppData\Local\Programs\Python\Python313\python.exe" manage.py runserver
 pause
+
