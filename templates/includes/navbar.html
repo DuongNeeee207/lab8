@@ -327,59 +327,38 @@
     </div>
 </div>
 
-<!-- AUTH POPUP MODAL (Đăng nhập / Đăng ký) -->
+<!-- AUTH POPUP MODAL (2 nút Đăng nhập / Đăng ký) -->
 <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;">
         <div class="modal-content rounded-0 border-0 shadow-lg">
-            <div class="modal-header border-0 pb-0 pt-4 px-4 position-relative">
+            <div class="modal-header border-0 pb-0 pt-3 px-3 position-relative">
                 <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Đóng"></button>
             </div>
-            <div class="modal-body px-4 pt-2 pb-4">
-                <div class="text-center mb-4">
-                    <span class="text-uppercase small text-muted letter-spacing-1">Chào mừng bạn đến với FashionStore</span>
-                    <h4 class="serif-font fw-bold mt-1 text-dark" id="authModalLabel">Tài Khoản Thành Viên</h4>
-                    <p class="small text-muted mb-0">Đăng nhập để theo dõi đơn hàng và nhận ưu đãi độc quyền</p>
+            <div class="modal-body px-4 pt-2 pb-4 text-center">
+                <div class="mb-3">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light border p-3 mb-2">
+                        <i class="bi bi-person fs-2 text-dark"></i>
+                    </div>
+                    <span class="d-block text-uppercase small text-muted letter-spacing-1">Chào mừng bạn đến với</span>
+                    <h4 class="serif-font fw-bold mt-1 text-dark" id="authModalLabel">FashionStore</h4>
+                    <p class="small text-muted mb-0">Vui lòng đăng nhập hoặc tạo tài khoản để trải nghiệm mua sắm và theo dõi đơn hàng.</p>
                 </div>
 
-                <!-- Form đăng nhập nhanh -->
-                <form action="{% url 'accounts:login' %}" method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label small fw-semibold text-dark mb-1">Tên đăng nhập hoặc Email</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border rounded-0 text-muted"><i class="bi bi-person"></i></span>
-                            <input type="text" name="username" class="form-control rounded-0" placeholder="Nhập tài khoản" required autofocus>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <label class="form-label small fw-semibold text-dark mb-0">Mật khẩu</label>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border rounded-0 text-muted"><i class="bi bi-lock"></i></span>
-                            <input type="password" name="password" class="form-control rounded-0" placeholder="••••••••" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-fashion-dark w-100 py-2 mt-2 rounded-0 fw-bold letter-spacing-1 text-uppercase">
-                        ĐĂNG NHẬP
-                    </button>
-                </form>
-
-                <div class="position-relative my-4 text-center">
-                    <hr class="m-0">
-                    <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 small text-muted text-uppercase" style="font-size: 0.72rem;">Hoặc</span>
-                </div>
-
-                <!-- Lựa chọn Đăng ký -->
-                <div class="text-center">
-                    <p class="small text-muted mb-2">Bạn là khách hàng mới?</p>
-                    <a href="{% url 'accounts:register' %}" class="btn btn-fashion-outline w-100 py-2 rounded-0 fw-bold text-uppercase">
-                        <i class="bi bi-person-plus me-1"></i> TẠO TÀI KHOẢN MỚI
+                <!-- 2 NÚT HÀNH ĐỘNG: ĐĂNG NHẬP HOẶC ĐĂNG KÝ -->
+                <div class="d-flex flex-column gap-2 mt-4">
+                    <a href="{% url 'accounts:login' %}" class="btn btn-fashion-dark w-100 py-3 rounded-0 fw-bold letter-spacing-1 text-uppercase d-flex align-items-center justify-content-center gap-2 text-decoration-none">
+                        <i class="bi bi-box-arrow-in-right fs-5"></i> ĐĂNG NHẬP
+                    </a>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-fashion-outline w-100 py-3 rounded-0 fw-bold letter-spacing-1 text-uppercase d-flex align-items-center justify-content-center gap-2 text-decoration-none">
+                        <i class="bi bi-person-plus fs-5"></i> ĐĂNG KÝ TÀI KHOẢN
                     </a>
                 </div>
-            </div>
-            <div class="modal-footer border-top bg-light py-2 px-4 justify-content-center">
-                <span class="small text-muted" style="font-size: 0.75rem;"><i class="bi bi-shield-check text-success me-1"></i> Bảo mật thông tin thanh toán & tài khoản</span>
+
+                <div class="mt-4 pt-3 border-top">
+                    <small class="text-muted" style="font-size: 0.76rem;">
+                        <i class="bi bi-gift text-danger me-1"></i> Đăng ký thành viên nhận ngay ưu đãi freeship đơn đầu tiên!
+                    </small>
+                </div>
             </div>
         </div>
     </div>
