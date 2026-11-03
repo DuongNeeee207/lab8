@@ -136,4 +136,21 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    // 5. Tự động mở popup đăng nhập/đăng ký khi bấm các chức năng yêu cầu tài khoản
+    document.addEventListener('click', function (e) {
+        if (window.IS_USER_AUTHENTICATED) return;
+
+        // Bắt các thẻ hoặc nút điều hướng đến giỏ hàng, đơn hàng, tài khoản, hoặc có class / attribute yêu cầu auth
+        const authTrigger = e.target.closest('a[href*="/cart/"], a[href*="/orders/"], a[href*="/accounts/profile/"], .need-auth, [data-require-auth="true"]');
+        if (authTrigger) {
+            e.preventDefault();
+            e.stopPropagation();
+            const modalEl = document.getElementById('authModal');
+            if (modalEl && window.bootstrap && bootstrap.Modal) {
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            }
+        }
+    });
 });

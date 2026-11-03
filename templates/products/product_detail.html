@@ -99,9 +99,15 @@
 
                     <!-- Add to Cart Action (Desktop) -->
                     <div class="d-grid gap-2 mb-4">
+                        {% if user.is_authenticated %}
                         <button type="submit" id="add-to-cart-btn" class="btn btn-fashion-dark py-3 rounded-0">
                             <i class="bi bi-bag-plus me-2 fs-5 align-middle"></i> THÊM VÀO GIỎ HÀNG
                         </button>
+                        {% else %}
+                        <button type="button" class="btn btn-fashion-dark py-3 rounded-0" data-bs-toggle="modal" data-bs-target="#authModal">
+                            <i class="bi bi-bag-plus me-2 fs-5 align-middle"></i> THÊM VÀO GIỎ HÀNG
+                        </button>
+                        {% endif %}
                     </div>
                 </form>
                 {% else %}
@@ -181,9 +187,12 @@
                     </button>
                 </form>
                 {% else %}
-                <p class="small text-muted mb-0">
-                    Vui lòng <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="fw-bold text-dark text-decoration-underline">đăng nhập</a> để viết đánh giá cho sản phẩm này.
-                </p>
+                <div class="text-center py-3 bg-white border p-3">
+                    <p class="small text-muted mb-2">Vui lòng đăng nhập để viết đánh giá cho sản phẩm này.</p>
+                    <button type="button" class="btn btn-fashion-dark btn-sm rounded-0 px-3 text-uppercase" data-bs-toggle="modal" data-bs-target="#authModal">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập ngay
+                    </button>
+                </div>
                 {% endif %}
             </div>
         </div>
@@ -227,9 +236,15 @@
         <div class="small text-muted" style="font-size: 0.72rem;">Giá bán:</div>
         <div class="fw-bold text-dark h6 mb-0">{{ product.get_final_price|vnd }}</div>
     </div>
+    {% if user.is_authenticated %}
     <button type="button" class="btn btn-dark rounded-0 px-4 py-2 fw-bold small d-flex align-items-center gap-2" onclick="triggerMobileAddToCart();">
         <i class="bi bi-bag-plus"></i> Thêm giỏ hàng
     </button>
+    {% else %}
+    <button type="button" class="btn btn-dark rounded-0 px-4 py-2 fw-bold small d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#authModal">
+        <i class="bi bi-bag-plus"></i> Thêm giỏ hàng
+    </button>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock %}

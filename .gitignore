@@ -3,10 +3,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 
-# Django
-db.sqlite3
-media/*
-!media/categories/
+# Django Static
 staticfiles/
 
 # Virtual Environment
