@@ -1,61 +1,57 @@
 @echo off
-title FashionStore - Khởi Chạy Website Bán Hàng
+title FashionStore - Khoi Chay Website Ban Hang
 chcp 65001 > nul
 cd /d "%~dp0"
 
 echo =========================================================================
-echo               FASHIONSTORE - MÁY CHỦ BÁN HÀNG DJANGO
+echo               FASHIONSTORE - MAY CHU BAN HANG DJANGO
 echo =========================================================================
 echo.
 
-:: 1. Tự động tìm Python trên máy
+:: 1. Uu tien dung duong dan Python 3.13 tren may hoac python trong PATH
 set "PY_CMD="
 
-where python >nul 2>nul
-if not errorlevel 1 (
-    set "PY_CMD=python"
+if exist "C:\Users\ThinkPad\AppData\Local\Programs\Python\Python313\python.exe" (
+    set "PY_CMD=C:\Users\ThinkPad\AppData\Local\Programs\Python\Python313\python.exe"
+)
+
+if "%PY_CMD%"=="" (
+    where python >nul 2>nul
+    if not errorlevel 1 set "PY_CMD=python"
 )
 
 if "%PY_CMD%"=="" (
     where py >nul 2>nul
-    if not errorlevel 1 (
-        set "PY_CMD=py"
-    )
+    if not errorlevel 1 set "PY_CMD=py"
 )
 
 if "%PY_CMD%"=="" (
-    if exist "C:\Users\ThinkPad\AppData\Local\Programs\Python\Python313\python.exe" (
-        set "PY_CMD=C:\Users\ThinkPad\AppData\Local\Programs\Python\Python313\python.exe"
-    )
-)
-
-if "%PY_CMD%"=="" (
-    echo [LỖI] Không tìm thấy Python trên máy tính của bạn!
-    echo Vui lòng cài đặt Python từ https://www.python.org/ (nhớ tích chọn 'Add Python to PATH').
+    echo [LOI] Khong tim thay Python tren may tinh cua ban!
+    echo Vui long cai dat Python tu https://www.python.org/
     pause
     exit /b 1
 )
 
-:: 2. Tự động nhận diện thư viện trong venv đi kèm nếu có
+:: 2. Tu dong nhan dien site-packages
 if exist "%~dp0venv\Lib\site-packages" (
     set "PYTHONPATH=%~dp0venv\Lib\site-packages;%PYTHONPATH%"
 )
 
-:: 3. Kiểm tra xem Django đã có chưa, nếu máy mới chưa có thì tự động cài đặt
-%PY_CMD% -c "import django" >nul 2>nul
+:: 3. Kiem tra va cai dat neu may chua co Django
+"%PY_CMD%" -c "import django" >nul 2>nul
 if errorlevel 1 (
-    echo [THÔNG BÁO] Đang tự động cài đặt các thư viện cần thiết (Django, Pillow, DRF)...
-    %PY_CMD% -m pip install -r requirements.txt
+    echo [THONG BAO] Dang tu dong cai dat thu vien can thiet...
+    "%PY_CMD%" -m pip install -r requirements.txt
 )
 
-:: 4. Mở trình duyệt và chạy server
+:: 4. Thong bao khoi dong
 echo.
-echo [✓] Đang khởi động máy chủ tại: http://127.0.0.1:8000/
-echo [✓] Trình duyệt web sẽ tự động mở...
-echo [✓] Nhấn tổ hợp phím Ctrl + C để dừng máy chủ.
+echo [OK] Dang khoi dong may chu tai: http://127.0.0.1:8000/
+echo [OK] Trinh duyet web se tu dong mo ngay bay gio...
+echo [OK] Nhan to hop phim Ctrl + C de dung may chu.
 echo =========================================================================
 echo.
 
 start http://127.0.0.1:8000/
-%PY_CMD% manage.py runserver 127.0.0.1:8000
+"%PY_CMD%" manage.py runserver 127.0.0.1:8000
 pause
