@@ -1,222 +1,135 @@
-# THIẾT KẾ BỐ CỤC VÀ KHUNG GIAO DIỆN (WIREFRAME DESIGNS)
+# THIẾT KẾ BỐ CỤC VÀ KHUNG GIAO DIỆN (UI & WIREFRAME DESIGNS)
 
 ---
 
 ## 1. NGUYÊN TẮC THIẾT KẾ THỜI TRANG (FASHION STORE DESIGN PHILOSOPHY)
-- **Cảm hứng:** Zara, H&M, Uniqlo - phong cách hiện đại, tối giản (Minimalism), thanh lịch (Sophisticated).
-- **Màu sắc chủ đạo:**
-  - Nền: Trắng tuyết `#FFFFFF` và xám khói nhẹ `#F8F9FA`.
-  - Màu chữ & đường nét: Đen tuyền `#111111` và xám đậm `#495057`.
-  - Điểm nhấn (Accents): Tông màu be sang trọng `#E5D9C5` hoặc đen huyền bí để làm nổi bật hình ảnh thời trang.
-- **Typography:** Font chữ không chân hiện đại, gọn gàng (Inter, Montserrat hoặc System Sans-serif), phân cấp rõ rệt giữa Tiêu đề (Headings) và Giá cả (Price tags).
-- **Hình ảnh:** Tỷ lệ khung hình chuẩn thời trang (3:4 hoặc 1:1), sắc nét, bố cục thông thoáng, có hiệu ứng zoom nhẹ (hover scale) khi di chuột.
+- **Cảm hứng thiết kế:** Phong cách tối giản (Minimalism) hiện đại theo tiêu chuẩn của các thương hiệu thời trang cao cấp quốc tế (Zara, Uniqlo, Mango, Routine).
+- **Hệ màu chủ đạo (Color Palette):**
+  - **Nền chính (Background):** Trắng tuyết `#FFFFFF` và xám khói `#F8F9FA`.
+  - **Màu chữ & Đường nét:** Đen tuyền `#111111` và xám trung tính `#495057`.
+  - **Điểm nhấn tương phản (Accents):** Tông màu đen huyền bí kết hợp badge đỏ/đen nổi bật cho nhãn `KHUYẾN MÃI` và `GIẢM GIÁ`.
+- **Typography:** Font chữ không chân (Sans-serif) thanh lịch, phân cấp thị giác rõ ràng giữa Tiêu đề (Headings), Thẻ phân loại và Giá tiền VNĐ.
+- **Tối ưu hiển thị hình ảnh:** Khung hình chuẩn tỷ lệ 1:1 và 3:4, độ phân giải cao, hỗ trợ bo góc nhẹ và hiệu ứng hover tương tác mượt mà.
 
 ---
 
-## 2. WIREFRAME CHI TIẾT CÁC TRANG CHÍNH
+## 2. GIAO DIỆN THỰC TẾ VÀ ĐẶC TẢ BỐ CỤC CÁC TRANG CHÍNH
 
 ### 2.1. TRANG CHỦ (HOMEPAGE)
-```text
-+-----------------------------------------------------------------------------------+
-|  [FASHIONSTORE]   Nam   Nữ   Áo sơ mi   Áo thun   Váy đầm   [Tìm kiếm...]  [Giỏ(2)] [Đăng nhập] |
-+-----------------------------------------------------------------------------------+
-|                                                                                   |
-|                      HERO BANNER: BỘ SƯU TẬP MÙA THU ĐÔNG 2026                    |
-|                        "Tối giản phong cách - Khẳng định cá tính"                 |
-|                                [KHÁM PHÁ NGAY]                                    |
-|                                                                                   |
-+-----------------------------------------------------------------------------------+
-|  DANH MỤC NỔI BẬT (FEATURED CATEGORIES)                                           |
-|  +-----------------+  +-----------------+  +-----------------+  +-----------------+  |
-|  |   [Ảnh Áo Nam]  |  |   [Ảnh Váy Nữ]  |  |  [Ảnh Áo Khoác] |  |   [Ảnh Phụ Kiện]|  |
-|  |      ÁO NAM     |  |      VÁY NỮ     |  |    ÁO KHOÁC     |  |     PHỤ KIỆN    |  |
-|  +-----------------+  +-----------------+  +-----------------+  +-----------------+  |
-+-----------------------------------------------------------------------------------+
-|  SẢN PHẨM MỚI VỀ (NEW ARRIVALS)                                                   |
-|  +---------------+  +---------------+  +---------------+  +---------------+       |
-|  | [Ảnh SP 1]    |  | [Ảnh SP 2]    |  | [Ảnh SP 3]    |  | [Ảnh SP 4]    |       |
-|  | Áo Blazer Nam |  | Đầm Xòe Linen |  | Sơ Mi Oxford  |  | Quần Jean Baggy|      |
-|  | 850.000đ      |  | 620.000đ      |  | 450.000đ      |  | 550.000đ      |       |
-|  +---------------+  +---------------+  +---------------+  +---------------+       |
-+-----------------------------------------------------------------------------------+
-|  CAM KẾT DỊCH VỤ                                                                  |
-|  [Miễn phí vận chuyển > 500k]  [Đổi trả trong 30 ngày]  [Thanh toán khi nhận COD] |
-+-----------------------------------------------------------------------------------+
-|  FOOTER: Giới thiệu | Chính sách đổi trả | Hướng dẫn chọn size | Hotline: 1900 xxxx |
-+-----------------------------------------------------------------------------------+
-```
+
+![Giao diện thực tế Trang Chủ](screenshots/01_home.jpg)
+
+**Đặc tả thành phần & Bố cục:**
+- **Thanh thông báo tiện ích (Top Banner):** Thông điệp cam kết miễn phí vận chuyển toàn quốc cho đơn hàng từ 500.000₫.
+- **Thanh điều hướng toàn diện (Header Navigation & Mega Menu):** Logo thương hiệu `FASHIONSTORE` phong cách Typographic, liên kết điều hướng 7 danh mục thời trang chính, công cụ tìm kiếm, tài khoản người dùng và giỏ hàng với huy hiệu số lượng realtime.
+- **Hero Banner:** Trình diễn bộ sưu tập Thu Đông 2026, câu slogan định vị *"Tối giản phong cách. Khẳng định cá tính"* cùng hai nút kêu gọi hành động (CTA): `MUA SẮM NGAY` và `VỀ THƯƠNG HIỆU`.
+- **Khối giá trị cốt lõi (USP Badges):** 3 cam kết dịch vụ nổi bật: Giao hàng toàn quốc (Free > 500k), Đổi hàng 30 ngày tận nơi thuận tiện, Thanh toán COD kiểm tra hàng trước khi nhận.
 
 ---
 
-### 2.2. TRANG DANH SÁCH SẢN PHẨM (PRODUCT LISTING)
-```text
-+-----------------------------------------------------------------------------------+
-|  [FASHIONSTORE]   Nam   Nữ   Áo sơ mi   Áo thun   Váy đầm   [Tìm kiếm...]  [Giỏ(2)] [User]    |
-+-----------------------------------------------------------------------------------+
-|  Trang chủ / Sản phẩm                                                              |
-|  TẤT CẢ SẢN PHẨM THỜI TRANG (120 sản phẩm)                                        |
-+---------------------------------+-------------------------------------------------+
-|  BỘ LỌC (SIDEBAR FILTER)        |  Sắp xếp theo: [Mới nhất | Giá tăng | Giá giảm] |
-|                                 +-------------------------------------------------+
-|  Danh mục:                      |  +---------------+ +---------------+ +----------+  |
-|  [x] Tất cả                     |  | [Ảnh SP]      | | [Ảnh SP]      | | [Ảnh SP] |  |
-|  [ ] Áo sơ mi                   |  | Sơ Mi Trắng   | | Áo Thun Basic | | Quần Tây |  |
-|  [ ] Áo thun                    |  | 390.000đ      | | 250.000đ      | | 520.000đ |  |
-|  [ ] Quần jeans                 |  | Size: S, M, L | | Size: M, L    | | Size: 30 |  |
-|  [ ] Váy đầm                    |  +---------------+ +---------------+ +----------+  |
-|                                 |  +---------------+ +---------------+ +----------+  |
-|  Mức giá:                       |  | [Ảnh SP]      | | [Ảnh SP]      | | [Ảnh SP] |  |
-|  (o) Tất cả mức giá             |  | Áo Len Cổ Lọ  | | Chân Váy Midi | | Blazer   |  |
-|  ( ) Dưới 300.000đ              |  | 480.000đ      | | 380.000đ      | | 890.000đ |  |
-|  ( ) 300.000đ - 700.000đ        |  +---------------+ +---------------+ +----------+  |
-|  ( ) Trên 700.000đ              |                                                 |
-|                                 |  PHÂN TRANG:  [ < ]  [ 1 ]  [ 2 ]  [ 3 ]  [ > ] |
-+---------------------------------+-------------------------------------------------+
-```
+### 2.2. TRANG DANH SÁCH SẢN PHẨM (PRODUCT LISTING / CATALOG)
+
+![Giao diện thực tế Danh Sách Sản Phẩm](screenshots/02_products.jpg)
+
+**Đặc tả thành phần & Bố cục:**
+- **Thanh điều hướng phân cấp (Breadcrumbs):** Hiển thị rõ đường dẫn duyệt web: `Trang chủ / Tất cả sản phẩm`.
+- **Tiêu đề phân hệ & Số liệu:** Tiêu đề bộ sưu tập kèm tổng số lượng sản phẩm tìm thấy trong hệ thống (`82 sản phẩm chất lượng`).
+- **Bộ lọc đa năng bên trái (Left Sidebar Filter):**
+  - Lọc theo từng danh mục cụ thể kèm huy hiệu số lượng tồn (Phụ Kiện, Quần Jeans, Váy Đầm, Hoodie, Áo Khoác, Sơ Mi, Áo Thun).
+  - Bộ lọc khoảng giá linh hoạt.
+- **Lưới hiển thị sản phẩm (Responsive Grid):** Thẻ sản phẩm chuẩn tỷ lệ 3:4, nhãn ưu đãi `KHUYẾN MÃI` góc trái, hiển thị ảnh đại diện, danh mục phân cấp và tên sản phẩm.
+- **Bộ sắp xếp nhanh (Sort Dropdown):** Cho phép sắp xếp theo Mới nhất, Giá tăng dần, Giá giảm dần.
 
 ---
 
-### 2.3. TRANG CHI TIẾT SẢN PHẨM (PRODUCT DETAIL)
-```text
-+-----------------------------------------------------------------------------------+
-|  [FASHIONSTORE]   Nam   Nữ   Áo sơ mi   Áo thun   Váy đầm   [Tìm kiếm...]  [Giỏ(2)] [User]    |
-+-----------------------------------------------------------------------------------+
-|  Trang chủ / Áo sơ mi / Áo Sơ Mi Nam Oxford Cổ Điển                               |
-+--------------------------------------+--------------------------------------------+
-|                                      |  ÁO SƠ MI NAM OXFORD CỔ ĐIỂN              |
-|  +--------------------------------+  |  Mã SP: FS-SHIRT-01                        |
-|  |                                |  |                                            |
-|  |                                |  |  GIÁ BÁN: 450.000đ  (Giá gốc: 550.000đ)    |
-|  |                                |  |                                            |
-|  |       ẢNH SẢN PHẨM LỚN         |  |  Màu sắc: [x] Trắng  [ ] Xanh nhạt  [ ] Đen |
-|  |       (Độ phân giải cao)       |  |                                            |
-|  |                                |  |  Kích thước (Size):                        |
-|  |                                |  |  [ S ]  [ M ]  [ L ]  [ XL ]  (Bảng size)  |
-|  |                                |  |                                            |
-|  +--------------------------------+  |  Số lượng: [ - ]  [ 1 ]  [ + ] (Còn 15 cái)|
-|                                      |                                            |
-|  [Ảnh nhỏ 1]  [Ảnh nhỏ 2]  [Ảnh nhỏ 3] |  [   THÊM VÀO GIỎ HÀNG   ]  [   MUA NGAY  ]  |
-|                                      |                                            |
-|                                      |  MÔ TẢ SẢN PHẨM:                           |
-|                                      |  - Chất liệu 100% cotton Oxford dày dặn.   |
-|                                      |  - Thiết kế form Slim-fit tôn dáng lịch thiệp.|
-+--------------------------------------+--------------------------------------------+
-|  ĐÁNH GIÁ TỪ KHÁCH HÀNG (4.8 / 5.0 ★★★★☆ - 12 đánh giá)                           |
-|  - Nguyễn Văn A (★★★★★): "Chất vải rất mát, đường may tỉ mỉ, mặc vừa in."          |
-|  - Trần Thị B   (★★★★☆): "Giao hàng nhanh, đóng gói hộp chỉn chu."                 |
-|  [Form gửi đánh giá: Nhập nhận xét & chọn số sao]                                 |
-+-----------------------------------------------------------------------------------+
-```
+### 2.3. TRANG CHI TIẾT SẢN PHẨM & BIẾN THỂ (PRODUCT DETAIL & VARIANTS)
+
+![Giao diện thực tế Chi Tiết Sản Phẩm](screenshots/03_product_detail.jpg)
+
+**Đặc tả thành phần & Bố cục:**
+- **Khung trưng bày hình ảnh lớn:** Ảnh sản phẩm độ phân giải cao, hỗ trợ zoom chi tiết chất liệu và đường may.
+- **Khu vực thông tin giá & ưu đãi:** Giá bán chính thức định dạng VNĐ chuẩn (`189.000₫`), giá gốc gạch ngang (`229.000₫`) và nhãn đỏ `GIẢM GIÁ`.
+- **Bộ chọn biến thể trực quan (Variants Selector):**
+  - Các nút kích cỡ & màu sắc thiết kế dạng button trực quan: `Size FREESIZE - Đen`, `Size FREESIZE - Trắng`, `Size FREESIZE - Navy`.
+  - Tự động kiểm tra và phản hồi số lượng tồn kho tức thì: `Còn hàng (25 sản phẩm sẵn có tại kho)`.
+- **Khối thao tác mua sắm:** Ô nhập số lượng tùy chỉnh, nút bấm nổi bật `THÊM VÀO GIỎ HÀNG` tích hợp AJAX phản hồi không cần tải lại trang.
+- **Mô tả chi tiết & Cam kết chất lượng:** Thông tin nguồn gốc, kiểu dáng, form mẫu, kèm 3 thẻ bảo đảm chính hãng 100%, đổi trả trong 30 ngày và freeship.
 
 ---
 
-### 2.4. TRANG GIỎ HÀNG (SHOPPING CART)
-```text
-+-----------------------------------------------------------------------------------+
-|  [FASHIONSTORE]   Nam   Nữ   Áo sơ mi   Áo thun   Váy đầm   [Tìm kiếm...]  [Giỏ(2)] [User]    |
-+-----------------------------------------------------------------------------------+
-|  GIỎ HÀNG CỦA BẠN (2 món)                                                         |
-+----------------------------------------------------+------------------------------+
-|  Sản phẩm                         Đơn giá  Số lượng |  CỘNG GIỎ HÀNG               |
-+----------------------------------------------------+------------------------------+
-|  [Ảnh SP]  Áo Sơ Mi Nam Oxford     450.000đ [ - 1 + ]|  Tạm tính:         740.000đ   |
-|            Phân loại: Trắng / Size M       [Xóa]    |  Phí vận chuyển:   Miễn phí  |
-|                                                    |  --------------------------  |
-|  [Ảnh SP]  Áo Thun Trơn Basic      290.000đ [ - 1 + ]|  TỔNG CỘNG:        740.000đ   |
-|            Phân loại: Đen / Size L         [Xóa]    |  (Đã bao gồm VAT)            |
-|                                                    |                              |
-|  [ < Tiếp tục mua sắm ]             [Xóa tất cả]   |  [ TIẾN HÀNH THANH TOÁN -> ] |
-+----------------------------------------------------+------------------------------+
-```
+### 2.4. TRANG GIỎ HÀNG THỜI TRANG (SHOPPING CART)
+
+![Giao diện thực tế Giỏ Hàng](screenshots/04_cart.png)
+
+**Đặc tả thành phần & Bố cục:**
+- **Thông báo trạng thái (Alert Notification):** Thanh thông báo nền xanh xác nhận hành động thêm sản phẩm vào giỏ thành công.
+- **Bảng chi tiết các món trong giỏ (Cart Table):**
+  - Cột sản phẩm: Ảnh thu nhỏ, tên sản phẩm, thông tin biến thể cụ thể (Kích cỡ: S, Màu: Đen, Mã kho SKU: `68-S-DEN-1`).
+  - Cột đơn giá: Định dạng chuẩn tiền tệ Việt Nam.
+  - Cột số lượng: Nút tăng giảm số lượng (+ / -) tương tác nhanh.
+  - Cột thành tiền và nút Xóa biểu tượng thùng rác màu đỏ.
+- **Thẻ tóm tắt đơn hàng (Order Summary Card):** Tạm tính giá trị giỏ hàng, cước vận chuyển (Tự động hiển thị `MIỄN PHÍ` khi đạt mốc ưu đãi), tổng cộng thanh toán cuối cùng và nút lớn `TIẾN HÀNH ĐẶT HÀNG ->`.
 
 ---
 
-### 2.5. TRANG THANH TOÁN (CHECKOUT)
-```text
-+-----------------------------------------------------------------------------------+
-|  [FASHIONSTORE]                       ĐẶT HÀNG & THANH TOÁN                        |
-+----------------------------------------------------+------------------------------+
-|  THÔNG TIN GIAO HÀNG                               |  ĐƠN HÀNG CỦA BẠN (2 món)    |
-|                                                    +------------------------------+
-|  Họ và tên người nhận (*):                         |  - Áo Sơ Mi Oxford (Trắng, M) |
-|  [ Nguyễn Văn A                                 ]  |    SL: 1 x 450.000đ          |
-|                                                    |  - Áo Thun Basic (Đen, L)     |
-|  Số điện thoại (*):                                |    SL: 1 x 290.000đ          |
-|  [ 0912345678                                   ]  |  --------------------------  |
-|                                                    |  Tạm tính:         740.000đ   |
-|  Địa chỉ nhận hàng chi tiết (*):                   |  Phí vận chuyển:     0đ (Free)|
-|  [ Số 123 Đường Cầu Giấy, Hà Nội                ]  |  TỔNG THANH TOÁN:  740.000đ   |
-|                                                    +------------------------------+
-|  Ghi chú đơn hàng (Tùy chọn):                      |  PHƯƠNG THỨC THANH TOÁN      |
-|  [ Giao hàng giờ hành chính                     ]  |  (o) Thanh toán khi nhận hàng|
-|                                                    |      (COD - Cash on Delivery)|
-|                                                    |                              |
-|                                                    |  [ XÁC NHẬN ĐẶT HÀNG (COD) ] |
-+----------------------------------------------------+------------------------------+
-```
+### 2.5. TRANG ĐẶT HÀNG & THANH TOÁN (CHECKOUT & PAYMENT)
+
+![Giao diện thực tế Thanh Toán Đặt Hàng](screenshots/05_checkout.png)
+
+**Đặc tả thành phần & Bố cục:**
+- **Tiêu đề bảo mật:** `QUY TRÌNH MUA HÀNG AN TOÀN - Thông Tin Thanh Toán & Giao Hàng`.
+- **Phân vùng 1: Địa chỉ nhận hàng (Shipping Address):**
+  - Họ và tên người nhận (*).
+  - Số điện thoại nhận hàng chuẩn 10 chữ số (*).
+  - Địa chỉ giao hàng chi tiết (*).
+  - Ghi chú giao hàng linh hoạt cho shipper.
+- **Phân vùng 2: Hình thức thanh toán (Payment Method):**
+  - Lựa chọn phương thức thanh toán khi nhận hàng (COD - Cash On Delivery) với hướng dẫn rõ ràng: kiểm tra kiện hàng trước khi thanh toán.
+- **Tóm tắt đơn hàng bên phải:** Danh sách các món chuẩn bị xuất kho kèm ảnh, số lượng, tổng thanh toán và nút `XÁC NHẬN ĐẶT HÀNG (COD)`.
 
 ---
 
 ### 2.6. TRANG ĐĂNG KÝ & ĐĂNG NHẬP (AUTH PAGES)
-```text
-+-----------------------------------------------------------------------------------+
-|                                 [FASHIONSTORE]                                    |
-|                                                                                   |
-|                         ĐĂNG NHẬP TÀI KHOẢN KHÁCH HÀNG                            |
-|                                                                                   |
-|                   Tên đăng nhập / Email:                                          |
-|                   [ user@example.com                    ]                         |
-|                                                                                   |
-|                   Mật khẩu:                                                       |
-|                   [ •••••••••••••                       ]                         |
-|                                                                                   |
-|                   [            ĐĂNG NHẬP            ]                             |
-|                                                                                   |
-|                   Chưa có tài khoản? [Đăng ký thành viên mới]                     |
-+-----------------------------------------------------------------------------------+
-```
+
+![Giao diện thực tế Đăng Nhập](screenshots/06_login.png)
+
+**Đặc tả thành phần & Bố cục:**
+- **Thẻ xác thực tập trung (Centered Card):** Bố cục tối giản, phân cấp typography rõ ràng với lời chào *"Chào mừng trở lại - Đăng Nhập"*.
+- **Các trường nhập liệu an toàn:**
+  - Tên đăng nhập (Username / Email).
+  - Mật khẩu với cơ chế mã hóa bảo mật.
+- **Nút hành động chính:** Nút đen tràn rộng `ĐĂNG NHẬP NGAY` phong cách tối giản.
+- **Điều hướng chuyển đổi:** Liên kết nhanh `Đăng ký tại đây` dành cho khách hàng mới chưa có tài khoản.
 
 ---
 
 ### 2.7. BẢNG ĐIỀU KHIỂN QUẢN TRỊ (ADMIN DASHBOARD)
-```text
-+-----------------------------------------------------------------------------------+
-|  [FASHIONSTORE ADMIN]  Dashboard   Sản phẩm   Danh mục   Đơn hàng   Kho   [Thoát]  |
-+-----------------------------------------------------------------------------------+
-|  TỔNG QUAN KINH DOANH                                                             |
-|  +-------------------+ +-------------------+ +-------------------+ +---------------+  |
-|  |  TỔNG DOANH THU   | |  ĐƠN HÀNG CHỜ DUYỆT| | TỔNG SẢN PHẨM ĐANG BÁN| KHÁCH HÀNG MỚI|
-|  |   45.800.000 đ    | |     12 Đơn hàng    | |     86 Sản phẩm   | |  142 Thành viên |
-|  +-------------------+ +-------------------+ +-------------------+ +---------------+  |
-+-----------------------------------------------------------------------------------+
-|  DANH SÁCH ĐƠN HÀNG MỚI CẦN XỬ LÝ                                                 |
-|  +-----------+----------------+------------+-------------+--------------+---------+  |
-|  | Mã Đơn    | Khách hàng     | Ngày đặt   | Tổng tiền   | Trạng thái   | Thao tác|  |
-|  +-----------+----------------+------------+-------------+--------------+---------+  |
-|  | FS-9821   | Nguyễn Văn A   | 30/10/2026 | 740.000 đ   | [Chờ xử lý]  | [Chi tiết]|
-|  | FS-9820   | Trần Thị B     | 30/10/2026 | 1.250.000 đ | [Đã xác nhận]| [Chi tiết]|
-|  | FS-9819   | Lê Hoàng C     | 29/10/2026 | 450.000 đ   | [Đang giao]  | [Chi tiết]|
-|  +-----------+----------------+------------+-------------+--------------+---------+  |
-+-----------------------------------------------------------------------------------+
-```
+
+![Giao diện thực tế Bảng Điều Khiển Quản Trị](screenshots/07_admin_dashboard.png)
+
+**Đặc tả thành phần & Bố cục:**
+- **Lời chào phân quyền:** Huy hiệu xanh thông báo *"Chào mừng bạn trở lại, Quản Trị Viên!"*.
+- **4 Thẻ số liệu chỉ số kinh doanh then chốt (KPI Cards):**
+  - **Tổng doanh thu:** Tự động tính toán tổng số tiền bán hàng từ các đơn thành công (`2.067.000₫`).
+  - **Đơn chờ xử lý:** Thống kê số lượng đơn mới cần duyệt (`2 Đơn`).
+  - **Sản phẩm đang bán:** Tổng số lượng mẫu mã đang kinh doanh (`82 Sản phẩm`).
+  - **Khách hàng đăng ký:** Số lượng tài khoản người dùng đã kích hoạt (`2 Thành viên`).
+- **Bảng danh sách đơn hàng mới nhất:** Hiển thị mã đơn (`#FS-EBECE8FE`, `#FS-46C14BCB`,...), tên khách hàng, tổng tiền, huy hiệu trạng thái màu sắc (`Đã hủy`, `Đang giao`, `Đã giao`, `Chờ xử lý`), ngày đặt và nút xem chi tiết.
+- **Lối tắt quản trị nhanh (Quick Navigation):** Truy cập nhanh Quản lý sản phẩm & tồn kho, Quản lý danh mục, Quản lý đơn hàng, Danh sách khách hàng và Kiểm tra REST API.
 
 ---
 
 ### 2.8. TRANG QUẢN LÝ SẢN PHẨM & BIẾN THỂ (PRODUCT MANAGEMENT)
-```text
-+-----------------------------------------------------------------------------------+
-|  [FASHIONSTORE ADMIN]  Dashboard   Sản phẩm   Danh mục   Đơn hàng   Kho   [Thoát]  |
-+-----------------------------------------------------------------------------------+
-|  QUẢN LÝ SẢN PHẨM THỜI TRANG                       [ + THÊM SẢN PHẨM MỚI ]        |
-+-----------------------------------------------------------------------------------+
-|  Tìm kiếm: [Nhập tên SP...]    Lọc danh mục: [Tất cả danh mục v]                  |
-+----+--------+--------------------+-----------+-----------+---------+----+---------+
-| ID | Ảnh    | Tên sản phẩm       | Danh mục  | Giá bán   | Tồn kho |Hiện| Thao tác|
-+----+--------+--------------------+-----------+-----------+---------+----+---------+
-| 01 | [Ảnh]  | Sơ Mi Nam Oxford   | Áo sơ mi  | 450.000đ  | 45 cái  |[v] |[Sửa][Xóa]|
-| 02 | [Ảnh]  | Đầm Xòe Linen Cổ V | Váy đầm   | 620.000đ  | 18 cái  |[v] |[Sửa][Xóa]|
-| 03 | [Ảnh]  | Áo Thun Trơn Basic | Áo thun   | 250.000đ  | 90 cái  |[v] |[Sửa][Xóa]|
-+----+--------+--------------------+-----------+-----------+---------+----+---------+
-| [ Chi tiết biến thể: FS-01 -> Size S: 10, Size M: 20, Size L: 15 ]                |
-+-----------------------------------------------------------------------------------+
-```
+
+![Giao diện thực tế Quản Lý Sản Phẩm](screenshots/08_admin_products.jpg)
+
+**Đặc tả thành phần & Bố cục:**
+- **Thanh thao tác nghiệp vụ:** Nút `QUẢN LÝ DANH MỤC` và nút nổi bật `+ THÊM SẢN PHẨM MỚI`.
+- **Bảng quản trị sản phẩm toàn diện:**
+  - **Ảnh đại diện:** Thumbnail sản phẩm thực tế.
+  - **Tên & Mã sản phẩm:** Tên sản phẩm kèm mã định danh nội bộ (Mã: `FS-82`, `FS-81`,...).
+  - **Danh mục:** Ánh xạ danh mục liên kết.
+  - **Giá bán & Giá niêm yết:** Thể hiện cả giá khuyến mãi và giá gốc.
+  - **Tồn kho:** Tổng số lượng tồn của sản phẩm kèm số lượng biến thể chi tiết (`74 cái (3 biến thể)`, `50 cái (2 biến thể)`).
+  - **Trạng thái hiển thị:** Huy hiệu xanh `Đang bật`.
+  - **Hàng nút thao tác:** Nút xem/sửa `Biến thể`, nút Sửa thông tin sản phẩm và nút Xóa có xác nhận an toàn.
