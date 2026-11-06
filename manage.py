@@ -6,6 +6,12 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    # Tu dong nhan dien thu vien co san trong thu muc vendor neu chua cai global
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    vendor_dir = os.path.join(base_dir, 'vendor')
+    if os.path.exists(vendor_dir) and vendor_dir not in sys.path:
+        sys.path.insert(0, vendor_dir)
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fashionstore.settings')
     try:
         from django.core.management import execute_from_command_line

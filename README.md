@@ -79,11 +79,11 @@ flowchart TD
 
 ## 🚀 3. HƯỚNG DẪN KHỞI CHẠY DỰ ÁN
 
-### Cách 1: Khởi chạy 1-Click (Khuyến nghị cho Windows)
-Dự án đã được tích hợp sẵn file thực thi thông minh [`run.bat`](file:///c:/Users/ThinkPad/Downloads/lab8-main/lab8-main/run.bat):
+### Cách 1: Khởi chạy 1-Click (Khuyến nghị cho Windows - Hoàn toàn Offline)
+Dự án đã được tích hợp sẵn gói thư viện offline (`wheels/` và `vendor/`) cùng file thực thi tự động `run.bat`:
 1. Tải source code về máy (hoặc `git clone https://github.com/DuongNeeee207/lab8.git`).
 2. Mở thư mục dự án và **nhấp đúp chuột vào file `run.bat`**.
-3. Hệ thống sẽ **tự động kiểm tra môi trường, kết nối thư viện và tự bật trình duyệt web** tại:
+3. Hệ thống sẽ **tự động nhận diện Python, nạp thư viện offline có sẵn (không cần tải thêm bất kỳ gói nào từ Internet) và tự động bật trình duyệt web** tại:
    👉 **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**
 
 ---
@@ -94,8 +94,8 @@ Dự án đã được tích hợp sẵn file thực thi thông minh [`run.bat`]
 # 1. Truy cập vào thư mục mã nguồn
 cd lab8-main
 
-# 2. Cài đặt các thư viện cần thiết
-pip install -r requirements.txt
+# 2. Cài đặt các thư viện offline (không cần kết nối Internet)
+pip install --no-index --find-links=wheels -r requirements.txt
 
 # 3. Khởi chạy máy chủ phát triển
 python manage.py runserver
@@ -209,6 +209,8 @@ lab8-main/
 │
 ├── media/                      # Lưu trữ hình ảnh sản phẩm & danh mục thực tế
 ├── docs/                       # Tài liệu thiết kế ERD, đặc tả yêu cầu, test report
+├── wheels/                     # Kho gói cài đặt offline (.whl) sẵn sàng không cần Internet
+├── vendor/                     # Mã nguồn thư viện nạp trực tiếp dự phòng
 ├── db.sqlite3                  # Cơ sở dữ liệu SQLite đã nạp sẵn dữ liệu hoàn chỉnh
 ├── requirements.txt            # Danh sách thư viện Python phụ thuộc
 └── run.bat                     # Trình khởi chạy 1-Click tự động cho Windows
